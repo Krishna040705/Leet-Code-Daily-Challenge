@@ -1,0 +1,26 @@
+class Solution {
+    private ListNode left;
+
+    public boolean isPalindrome(ListNode head) {
+        left = head;
+        return isPalindromeHelper(head);
+    }
+
+    private boolean isPalindromeHelper(ListNode right) {
+        // Base case: when right reaches the end of the list
+        if (right == null)
+            return true;
+
+        // Recursively check if the sublist is a palindrome
+        boolean isPalin = isPalindromeHelper(right.next);
+
+        // Check if the current nodes (left and right) values are equal
+        boolean isEqual = (left.val == right.val);
+
+        // Move left to the next node for the next recursion
+        left = left.next;
+
+        // Return true if the current nodes' values are equal and the sublist is palindrome
+        return isPalin && isEqual;
+    }
+}
