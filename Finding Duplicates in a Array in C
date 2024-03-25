@@ -1,0 +1,25 @@
+int* findDuplicates(int* nums, int numsSize, int* returnSize) {
+    int* result = (int*)malloc(sizeof(int) * numsSize); // Allocate memory for result
+    *returnSize = 0; // Initialize the size of the result array
+    
+    for (int i = 0; i < numsSize; ++i) {
+        int index = abs(nums[i]) - 1; // Get the index corresponding to the current number
+        
+        if (nums[index] < 0) { // If the number at index is negative, it's a duplicate
+            result[(*returnSize)++] = abs(nums[i]); // Store the duplicate number in result
+        } else {
+            nums[index] = -nums[index]; // Mark the number at index as visited
+        }
+    }
+    
+    // Restore the original array for further processing (optional)
+    for (int i = 0; i < numsSize; ++i) {
+        if (nums[i] < 0)
+            nums[i] = -nums[i];
+    }
+    
+    // Reallocate memory to shrink the result array
+    result = (int*)realloc(result, sizeof(int) * (*returnSize));
+    
+    return result; // Return the array of duplicates
+}
