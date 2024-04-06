@@ -1,0 +1,32 @@
+char* minRemoveToMakeValid(char* s) {
+    int len = strlen(s);
+    char* result = (char*)malloc(sizeof(char) * (len + 1));
+    int result_index = 0;
+    int openParenthesesCount = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (s[i] == '(')
+            openParenthesesCount++;
+        else if (s[i] == ')') {
+            if (openParenthesesCount == 0)
+                s[i] = '*';
+            else
+                openParenthesesCount--;
+        }
+    }
+
+    for (int i = len - 1; i >= 0; i--) {
+        if (openParenthesesCount > 0 && s[i] == '(') {
+            s[i] = '*';
+            openParenthesesCount--;
+        }
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (s[i] != '*')
+            result[result_index++] = s[i];
+    }
+    result[result_index] = '\0';
+
+    return result;
+}
