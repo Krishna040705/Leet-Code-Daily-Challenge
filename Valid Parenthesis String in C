@@ -1,0 +1,21 @@
+//Code by Keerti Krishna Sreenivas S 
+bool checkValidString(char* s) {
+    int min_open = 0, max_open = 0;
+    while (*s) {
+        if (*s == '(') {
+            min_open++;
+            max_open++;
+        } else if (*s == ')') {
+            min_open = min_open > 0 ? min_open - 1 : 0;
+            max_open--;
+        } else if (*s == '*') {
+            min_open = min_open > 0 ? min_open - 1 : 0;
+            max_open++;
+        }
+
+        if (max_open < 0) return false;
+        s++;
+    }
+    
+    return min_open == 0;
+}
