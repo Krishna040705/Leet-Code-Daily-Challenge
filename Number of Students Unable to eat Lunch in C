@@ -1,0 +1,15 @@
+int countStudents(int* students, int studentsSize, int* sandwiches, int sandwichesSize) {
+    int preference[2] = {0};
+    for (int i = 0; i < studentsSize; ++i) {
+        preference[students[i]]++;
+    }
+    
+    for (int i = 0; i < sandwichesSize; ++i) {
+        if (preference[sandwiches[i]] > 0) {
+            preference[sandwiches[i]]--;
+        } else {
+            return studentsSize - i;
+        }
+    }
+    return 0;
+}
