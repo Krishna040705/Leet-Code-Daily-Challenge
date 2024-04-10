@@ -1,0 +1,25 @@
+import java.util.*;
+
+class Solution {
+    public int[] deckRevealedIncreasing(int[] newDeck) {
+        Arrays.sort(newDeck);
+        
+        int n = newDeck.length;
+        int[] newResult = new int[n];
+        Deque<Integer> newIndices = new LinkedList<>();
+        
+        for (int i = 0; i < n; i++) {
+            newIndices.add(i);
+        }
+        
+        for (int card : newDeck) {
+            int idx = newIndices.poll();
+            newResult[idx] = card;
+            if (!newIndices.isEmpty()) {
+                newIndices.add(newIndices.poll());
+            }
+        }
+        
+        return newResult;
+    }
+}
