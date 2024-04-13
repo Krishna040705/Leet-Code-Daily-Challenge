@@ -1,0 +1,59 @@
+int maximalRectangle(char** matrix, int matrixSize, int* matrixColSize) {
+    if (matrixSize == 0 || *matrixColSize == 0)
+        return 0;
+    
+    int maxArea = 0;
+    int* heights = (int*)malloc((*matrixColSize) * sizeof(int));
+    
+    for (int i = 0; i < *matrixColSize; i++)
+        heights[i] = 0;
+    
+    for (int row = 0; row < matrixSize; row++) {
+        for (int col = 0; col < *matrixColSize; col++) {
+            if (matrix[row][col] == '1')
+                heights[col]++;
+            else
+                heights[col] = 0;
+        }
+        
+        maxArea = max(maxArea, largestRectangleArea(heights, *matrixColSize));
+    }
+    
+    free(heights);
+    return maxArea;
+}
+
+int largestRectangleArea(int* heights, int heightsSize) {
+    int* stack = (int*)malloc((heightsSize + 1) * sizeof(int));
+    int top = -1;
+    int maxArea = 0;
+    int i = 0;
+    
+    while (i < heightsSize) {
+        if (top == -1 || heights[i] >= heights[stack[top]]) {
+            stack[++top] = i;
+            i++;
+        } else {
+            int height = heights[stack[top]];
+            top--;
+            int width = top == -1 ? i : i - stack[top] - 1;
+            int area = height * width;
+            maxArea = max(maxArea, area);
+        }
+    }
+    
+    while (top != -1) {
+        int height = heights[stack[top]];
+        top--;
+        int width = top == -1 ? i : i - stack[top] - 1;
+        int area = height * width;
+        maxArea = max(maxArea, area);
+    }
+    
+    free(stack);
+    return maxArea;
+}
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
