@@ -1,0 +1,41 @@
+
+
+struct TreeNode* helper(struct TreeNode* root, int val, int depth, int currdepth) {
+    if (depth == 1) {
+        struct TreeNode* zoo = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+        zoo->val = val;
+        zoo->left = root;
+        zoo->right = NULL;
+        return zoo;
+    }
+
+    if (root == NULL) {
+        return root;
+    }
+
+    if (currdepth == depth - 1) {
+        struct TreeNode* leftman = root->left;
+        struct TreeNode* rightman = root->right;
+
+        root->left = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+        root->left->val = val;
+        root->left->left = leftman;
+        root->left->right = NULL;
+
+        root->right = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+        root->right->val = val;
+        root->right->left = NULL;
+        root->right->right = rightman;
+
+        return root;
+    }
+
+    helper(root->left, val, depth, currdepth + 1);
+    helper(root->right, val, depth, currdepth + 1);
+
+    return root;
+}
+
+struct TreeNode* addOneRow(struct TreeNode* root, int val, int depth) {
+    return helper(root, val, depth, 1);
+}
