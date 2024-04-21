@@ -1,0 +1,63 @@
+#include <stdbool.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+bool dfs(int current, int destination, Node** graph, bool* visited) {
+    if (current == destination)
+        return true;
+
+    visited[current] = true;
+    Node* temp = graph[current];
+    while (temp != NULL) {
+        int neighbor = temp->vertex;
+        if (!visited[neighbor]) {
+            if (dfs(neighbor, destination, graph, visited))
+                return true;
+        }
+        temp = temp->next;
+    }
+    return false;
+}
+
+bool validPath(int n, int** edges, int edgesSize, int* edgesColSize, int source, int destination) {
+    bool* visited = (bool*)calloc(n, sizeof(bool));
+    Node** graph = (Node**)calloc(n, sizeof(Node*));
+
+    for (int i = 0; i < n; i++) {
+        graph[i] = NULL;
+    }
+
+    for (int i = 0; i < edgesSize; i++) {
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->vertex = v;
+        newNode->next = graph[u];
+        graph[u] = newNode;
+
+        newNode = (Node*)malloc(sizeof(Node));
+        newNode->vertex = u;
+        newNode->next = graph[v];
+        graph[v] = newNode;
+    }
+
+    bool result = dfs(source, destination, graph, visited);
+
+    free(visited);
+    for (int i = 0; i < n; i++) {
+        Node* temp = graph[i];
+        while (temp != NULL) {
+            Node* next = temp->next;
+            free(temp);
+            temp = next;
+        }
+    }
+    free(graph);
+
+    return result;
+}
