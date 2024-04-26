@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h> // for INT_MAX
+
+int min(int** list, int gridSize, int gridColSize, int now) {
+    int min_val = INT_MAX;
+    for (int i = 0; i < now; i++) {
+        if (min_val > list[gridSize][i]) {
+            min_val = list[gridSize][i];
+        }
+    }
+    for (int i = now + 1; i < gridColSize; i++) {
+        if (min_val > list[gridSize][i]) {
+            min_val = list[gridSize][i];
+        }
+    }
+    return min_val;
+}
+
+int minFallingPathSum(int** grid, int gridSize, int* gridColSize) {
+    int** dp = (int**)malloc(sizeof(int*) * 2);
+    dp[0] = (int*)malloc(sizeof(int) * (*gridColSize));
+    dp[1] = (int*)malloc(sizeof(int) * (*gridColSize));
+    gridSize--;
+    int k = gridSize % 2;
+    for (int i = 0; i < *gridColSize; i++) {
+        dp[k][i] = grid[gridSize][i];
+    }
+    gridSize--;
+    int other = k;
+    while (gridSize >= 0) {
+        k = gridSize % 2;
+        for (int i = 0; i < *gridColSize; i++) {
+            dp[k][i] = min(dp, other, *gridColSize, i) + grid[gridSize][i];
+        }
+        other = k;
+        gridSize--;
+    }
+
+    int ans = min(dp, 0, *gridColSize, *gridColSize);
+    free(dp[0]);
+    free(dp[1]);
+    free(dp);
+    return ans;
+}
