@@ -1,0 +1,33 @@
+#define minimum(a, b) ((a) < (b) ? (a) : (b))
+
+int dist(char a, char b) {
+    return minimum(abs(a - b), 26 - abs(a - b));
+}
+
+int dp[101][101];
+
+int recursive(char *ring, char *key, int ring_length, int key_length, int ring_idx, int key_idx) {
+    if (key_idx == key_length) return 0;
+    if (dp[key_idx][ring_idx] != -1) return dp[key_idx][ring_idx];
+
+    int min_steps = 1e9;
+    for (int i = 0; i < ring_length; i++) {
+        if (ring[i] == key[key_idx]) {
+            int cw = (ring_idx + ring_length - i) % ring_length;
+            int ccw = (i + ring_length - ring_idx) % ring_length;
+            int steps = minimum(cw, ccw) + 1 + recursive(ring, key, ring_length, key_length, i, key_idx + 1);
+            min_steps = minimum(min_steps, steps);
+        }
+    }
+    dp[key_idx][ring_idx] = min_steps;
+    return min_steps;
+}
+
+int findRotateSteps(char* ring, char* key) {
+    int ring_length = strlen(ring);
+    int key_length = strlen(key);
+
+    memset(dp, -1, sizeof(dp));
+
+    return recursive(ring, key, ring_length, key_length, 0, 0);
+}
