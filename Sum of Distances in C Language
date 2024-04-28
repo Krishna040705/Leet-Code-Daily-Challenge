@@ -1,0 +1,92 @@
+typedef struct listnode{
+    int value;
+    struct listnode *next;
+}Node;
+
+int *answer,*child_count;
+Node **connect_list;
+int count_size;
+
+Node* new_node(int val)
+{
+    Node* temp= (Node*)malloc(sizeof(Node));
+    temp->value=val;
+    temp->next=NULL;
+    return temp;
+}
+
+void list_append(Node **head,int val)
+{
+    Node *new=new_node(val);
+    if(*head==NULL){
+        *head=new;
+    }
+    else{
+        Node *current=*head;
+        while(current->next!=NULL){
+            current=current->next;
+        }
+        current->next=new;
+    }
+}
+
+void dfs(int root,int pre)
+{
+    Node *current=connect_list[root];
+    int i;
+    while(current!=NULL){
+        i=current->value;
+        if(i!=pre){
+            dfs(i,root);
+            child_count[root] += child_count[i];
+            answer[root] += answer[i] + child_count[i];
+        }
+        current=current->next;
+    }   
+}
+
+void dfs2(int root,int pre)
+{
+    Node *current=connect_list[root];
+    int i;
+    while(current!=NULL){
+        i=current->value;
+        if(i!=pre){
+            answer[i] = answer[root] - child_count[i] + count_size - child_count[i];
+            dfs2(i,root);
+        }
+        current=current->next;
+    }
+}
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int* sumOfDistancesInTree(int n, int** edges, int edgesSize, int* edgesColSize, int* returnSize)
+{
+    
+    int x,y;
+    //memory Allocation
+    answer = calloc(n,sizeof(int));
+    child_count=calloc(n,sizeof(int));
+    connect_list=malloc(n*sizeof(Node*));
+    count_size=n;
+    
+    for(int i=0;i<n;i++){
+        connect_list[i]=NULL;
+        child_count[i]=1;
+    }
+    
+    for(int i=0;i<edgesSize;i++){
+        x=edges[i][0];
+        y=edges[i][1];
+        list_append(&connect_list[x],y);
+        list_append(&connect_list[y],x);
+    }
+    
+    dfs(0,-1);
+    dfs2(0,-1);
+       
+    *returnSize=n;
+    return answer;
+}
