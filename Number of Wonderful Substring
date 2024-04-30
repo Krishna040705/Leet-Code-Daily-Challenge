@@ -1,0 +1,17 @@
+long long wonderfulSubstrings(char *word) {
+    int n = strlen(word);
+    int *count = calloc(1 << 10, sizeof(int));
+    count[0] = 1;
+    int state = 0;
+    long long ret = 0;
+    for (int i = 0; i < n; i++) {
+        state ^= (1 << (word[i] - 'a'));
+        ret += count[state];
+        for (int j = 0; j < 10; j++) {
+            ret += count[state ^ (1 << j)];
+        }
+        count[state]++;
+    }
+    free(count);
+    return ret;
+}
