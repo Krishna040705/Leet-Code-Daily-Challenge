@@ -1,0 +1,19 @@
+char * reversePrefix(char * str, char ch){
+    int length = strlen(str);
+    int index = -1;
+    for(int i = 0; i < length; i++){
+        if(str[i] == ch){
+            index = i;
+            break;
+        }
+    }
+    
+    if(index == -1)
+        return str;
+    for(int i = 0; i <= index/2; i++){
+        char temp = str[i];
+        str[i] = str[index-i];
+        str[index-i] = temp;
+    }
+    return str;
+}
