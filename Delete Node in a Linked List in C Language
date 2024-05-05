@@ -1,0 +1,14 @@
+void deleteNode(struct ListNode* node) 
+{
+    struct ListNode *current, *previous = NULL;
+    current = node;
+    while (current->next != NULL)
+    {
+        previous = current;
+        current->val = current->next->val;
+        current = current->next;
+    }
+    if (previous != NULL)
+        previous->next = NULL;
+    free(current);
+}
