@@ -1,0 +1,45 @@
+struct ListNode* removeNodes(struct ListNode* head) {
+    if (head->next == NULL) return head;
+    
+    struct ListNode* prev = NULL;
+    struct ListNode* tmp = head;
+    head = head->next;
+    
+    // Reverse the linked list
+    while (head) {
+        tmp->next = prev;
+        prev = tmp;
+        tmp = head;
+        head = head->next;
+    }
+
+    tmp->next = prev;
+    head = tmp;
+    prev = head;
+    tmp = tmp->next;
+    while (tmp) {
+        if (tmp->val >= prev->val) {
+            prev->next = tmp;
+            prev = prev->next;
+        }
+        tmp = tmp->next;
+    }
+
+    prev->next = NULL;
+    prev = NULL;
+    tmp = head;
+    if (head->next == NULL) return head;
+    head = head->next;
+
+    while (head) {
+        tmp->next = prev;
+        prev = tmp;
+        tmp = head;
+        head = head->next;
+    }
+    
+    tmp->next = prev;
+    head = tmp;
+
+    return head;
+}
