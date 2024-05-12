@@ -1,0 +1,29 @@
+int** largestLocal(int** grid, int gridSize, int* gridColSize, int* returnSize, int** returnColumnSizes) {
+    int n = gridSize;
+    *returnSize = n - 2;
+    *returnColumnSizes = (int*)malloc((*returnSize) * sizeof(int));
+    for (int i = 0; i < *returnSize; i++) {
+        (*returnColumnSizes)[i] = n - 2;
+    }
+    
+    int** maxLocal = (int**)malloc((*returnSize) * sizeof(int*));
+    for (int i = 0; i < *returnSize; i++) {
+        maxLocal[i] = (int*)malloc((*returnSize) * sizeof(int));
+    }
+    
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            int max = grid[i][j];
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    if (grid[i + x][j + y] > max) {
+                        max = grid[i + x][j + y];
+                    }
+                }
+            }
+            maxLocal[i - 1][j - 1] = max;
+        }
+    }
+    
+    return maxLocal;
+}
