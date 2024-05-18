@@ -1,0 +1,23 @@
+
+
+int distributeCoinsHelper(struct TreeNode* node, int* moves) {
+    if (node == NULL) {
+        return 0;
+    }
+    
+    int leftExcess = distributeCoinsHelper(node->left, moves);
+    int rightExcess = distributeCoinsHelper(node->right, moves);
+    
+    int totalExcess = node->val + leftExcess + rightExcess - 1;
+    
+    *moves += abs(totalExcess);
+    
+    return totalExcess;
+}
+
+int distributeCoins(struct TreeNode* root) {
+    int moves = 0;
+    distributeCoinsHelper(root, &moves);
+    return moves;
+}
+```
