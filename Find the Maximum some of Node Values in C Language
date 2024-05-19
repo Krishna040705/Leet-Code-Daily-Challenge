@@ -1,0 +1,30 @@
+long long maximumValueSum(int* nums, int numsSize, int k, int** edges, int edgesSize, int* edgesColSize) {
+    long long sum1 = 0;
+    long long sum2 = 0;
+    int count = 0;
+
+    for(int i = 0; i < numsSize; i++) {
+        if((nums[i] ^ k) > nums[i]) {
+            sum1 += (nums[i] ^ k);
+            count++;
+        } else {
+            sum2 += nums[i];
+        }
+    }
+
+    if(count % 2 == 0) {
+        return sum1 + sum2;
+    }
+
+    long long maxi1 = 0;
+    long long maxi2 = 0;
+    for(int i = 0; i < numsSize; i++) {
+        if((nums[i] ^ k) > nums[i]) {
+            maxi1 = maxi1 > (sum1 - (nums[i] ^ k) + sum2 + nums[i]) ? maxi1 : (sum1 - (nums[i] ^ k) + sum2 + nums[i]);
+        } else {
+            maxi2 = maxi2 > (sum1 + (nums[i] ^ k) + sum2 - nums[i]) ? maxi2 : (sum1 + (nums[i] ^ k) + sum2 - nums[i]);
+        }
+    }
+
+    return maxi1 > maxi2 ? maxi1 : maxi2;
+}
