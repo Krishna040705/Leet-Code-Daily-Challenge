@@ -1,0 +1,47 @@
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
+
+bool is_palin(char* str, int left, int right) {
+    while(left <= right) {
+        if(str[left] != str[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+void helper(char* str, int i, int n, char*** res, int* returnSize, int** returnColSize, char** curr, int currSize) {
+    if(i == n) {
+        res[*returnSize] = malloc(sizeof(char*) * currSize);
+        (*returnColSize)[*returnSize] = currSize;
+        for(int j = 0; j < currSize; j++) {
+            res[*returnSize][j] = malloc(strlen(curr[j]) + 1);
+            strcpy(res[*returnSize][j], curr[j]);
+        }
+        (*returnSize)++;
+        return;
+    }
+    for(int j = i; j < n; j++) {
+        if(is_palin(str, i, j)) {
+            char* substring = malloc(j - i + 2);
+            strncpy(substring, &str[i], j - i + 1);
+            substring[j - i + 1] = '\0';
+            curr[currSize] = substring;
+            helper(str, j + 1, n, res, returnSize, returnColSize, curr, currSize + 1);
+            free(substring);
+        }
+    }
+}
+char*** partition(char* str, int* returnSize, int** returnColSize) {
+    int n = strlen(str);
+    char*** res = malloc(sizeof(char**) * (1 << n));
+    char** curr = malloc(sizeof(char*) * n);
+    *returnSize = 0;
+    *returnColSize = malloc(sizeof(int) * (1 << n));
+    helper(str, 0, n, res, returnSize, returnColSize, curr, 0);
+    free(curr);
+    return res;
+}
