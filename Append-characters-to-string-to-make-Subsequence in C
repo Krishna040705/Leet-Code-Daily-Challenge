@@ -1,0 +1,7 @@
+int appendCharacters(char* s, char* t) {
+  while (*s && *t) {
+    t += *s++ == *t;
+  }
+
+  return strlen(t);
+}
