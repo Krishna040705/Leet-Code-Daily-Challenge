@@ -1,0 +1,28 @@
+int longestPalindrome(char* s) {
+    int count[128] = {0}; // Array to store the frequency of each character (ASCII range)
+    int length = 0;
+    int i;
+    
+    // Step 1: Count the frequency of each character
+    for (i = 0; s[i] != '\0'; i++) {
+        count[(int)s[i]]++;
+    }
+    
+    // Step 2: Calculate the length of the longest palindrome
+    int odd_found = 0;
+    for (i = 0; i < 128; i++) {
+        if (count[i] % 2 == 0) {
+            length += count[i];
+        } else {
+            length += count[i] - 1;
+            odd_found = 1;
+        }
+    }
+    
+    // Step 3: If there's at least one character with an odd count, we can add one character to the center
+    if (odd_found) {
+        length += 1;
+    }
+    
+    return length;
+}
