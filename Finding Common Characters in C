@@ -1,0 +1,42 @@
+char ** commonChars(char ** words, int wordsSize, int* returnSize) {
+    int i, j;
+    int minFreq[26];
+    int wordFreq[26];
+    char **result = (char **)malloc(sizeof(char *) * 100); // assuming max 100 chars for the result
+    int resultIndex = 0;
+
+    // Initialize minFreq with INT_MAX (infinity equivalent for min comparison)
+    for (i = 0; i < 26; i++) {
+        minFreq[i] = INT_MAX;
+    }
+
+    // Calculate the min frequency of each character across all words
+    for (i = 0; i < wordsSize; i++) {
+        memset(wordFreq, 0, sizeof(wordFreq));
+        char *word = words[i];
+        // Count frequency of each character in the current word
+        for (j = 0; word[j] != '\0'; j++) {
+            wordFreq[word[j] - 'a']++;
+        }
+        // Update minFreq
+        for (j = 0; j < 26; j++) {
+            if (wordFreq[j] < minFreq[j]) {
+                minFreq[j] = wordFreq[j];
+            }
+        }
+    }
+
+    // Build the result based on minFreq
+    for (i = 0; i < 26; i++) {
+        while (minFreq[i] > 0) {
+            result[resultIndex] = (char *)malloc(2 * sizeof(char));
+            result[resultIndex][0] = 'a' + i;
+            result[resultIndex][1] = '\0';
+            resultIndex++;
+            minFreq[i]--;
+        }
+    }
+
+    *returnSize = resultIndex;
+    return result;
+}
