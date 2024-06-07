@@ -1,0 +1,96 @@
+#define to_idx(c) ((c) - 'a')
+
+typedef struct Trie
+{
+    int word;
+    struct Trie* children[26]; 
+} Trie;
+
+Trie* TrieInit()
+{
+    Trie* trie = (Trie*)malloc(sizeof(Trie));
+    trie->word = 0;
+    memset(trie->children, 0, sizeof(Trie*) * 26);
+    return trie;
+}
+
+void TrieDestory(Trie *trie)
+{
+    for(int i = 0; i < 26; i++)
+    {
+        if(trie->children[i])
+            TrieDestory(trie->children[i]);
+    }
+    free(trie);
+}
+
+void TrieInsert(Trie *trie, char* word)
+{ 
+    Trie *iter = trie;
+    while(*word)
+    {
+        if(iter->children[to_idx(*word)] == NULL) 
+            iter->children[to_idx(*word)] = TrieInit();
+        
+        iter = iter->children[to_idx(*word)];
+        if (*(word + 1)== NULL)
+            iter->word = 1;
+        word++;
+    }
+}
+
+int TrieStartsWith(Trie* trie, char* s)
+{ 
+    int idx = 0;
+    while(s[idx] && trie)
+    {
+        trie = trie->children[to_idx(s[idx])];
+        if(trie && trie->word) {
+            return idx + 1;
+        }
+        ++idx;
+    }
+    
+    return -1;
+}
+
+char res[1000001] = {0};
+
+char * replaceWords(char ** dictionary, int dictionarySize, char * sentence)
+{
+    memset(res, 0, sizeof(res));
+    
+    Trie *trie = TrieInit();
+    
+    for(int i = 0; i < dictionarySize; i++)
+        TrieInsert(trie, dictionary[i]);
+   
+    char *curr = res;
+    char *word_start = NULL;
+    int word_len = 0;
+    
+    while(*sentence)
+    {
+        if(*sentence == ' ')
+        {
+            *sentence = 0;
+            int len = TrieStartsWith(trie, sentence - word_len);
+            int cpy_len = len != -1 ? len : word_len;
+            
+            memcpy(curr, sentence - word_len, cpy_len); 
+            curr += cpy_len;
+            
+            *(curr++) = *sentence = ' ';
+            word_len = 0;
+        }  else {
+            word_len++;
+        }
+        sentence++;
+    }
+    
+    int len = TrieStartsWith(trie, sentence - word_len);
+    memcpy(curr, sentence - word_len, len != -1 ? len : word_len);
+    
+    TrieDestory(trie);
+    return res;
+}
