@@ -1,0 +1,18 @@
+int subarraysDivByK(int* nums, int numsSize, int k) {
+    int index, prefixSum = 0, subarrayCount = 0;
+    int *remainderCounts = calloc(k, sizeof(int));
+    
+    remainderCounts[0]++;
+    
+    for (index = 0; index < numsSize; index++) {
+        prefixSum = (prefixSum + nums[index]) % k;
+        if (prefixSum < 0)
+            prefixSum = (prefixSum + k) % k;
+        
+        subarrayCount += remainderCounts[prefixSum];
+        remainderCounts[prefixSum]++;
+    }
+    
+    free(remainderCounts);
+    return subarrayCount;
+}
