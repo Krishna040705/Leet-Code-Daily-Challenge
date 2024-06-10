@@ -1,0 +1,17 @@
+int heightChecker(int* heights, int heightsSize) {
+    int heightCount[101] = {0}; // Array to count the frequency of each height
+    int mismatchCount = 0; // Variable to count the number of mismatches
+    int* currentHeights = heights; // Pointer to the heights array
+    int totalHeights = heightsSize; // Total number of students
+    int remainingHeights = totalHeights; // Remaining heights to process
+
+    // Count the frequency of each height
+    while (remainingHeights--) {
+        heightCount[currentHeights[remainingHeights]]++;
+    }
+
+    // Compare the current heights with the expected (sorted) heights
+    for (int i = 0, heightIndex = 0; i < totalHeights; heightCount[heightIndex++] ? --heightCount[--heightIndex], mismatchCount += heightIndex != currentHeights[i++] : 0);
+
+    return mismatchCount; // Return the number of mismatches
+}
