@@ -1,0 +1,22 @@
+#include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
+
+bool judgeSquareSum(int c) {
+    long sumOfSquares = 0;
+    int low = 0;
+    int high = (int)sqrt(c); // cast the result of sqrt to int
+    printf("%d\n", high);
+
+    while (low <= high) {
+        sumOfSquares = (long)low * low + (long)high * high;
+        if (sumOfSquares == c) {
+            return true;
+        } else if (sumOfSquares > c) {
+            high--;
+        } else {
+            low++;
+        }
+    }
+    return false;
+}
