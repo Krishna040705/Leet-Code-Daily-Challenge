@@ -1,0 +1,43 @@
+#include <stdlib.h>
+
+typedef struct {
+    int difficulty;
+    int profit;
+} Job;
+
+int compareJobs(const void* a, const void* b) {
+    Job* jobA = (Job*)a;
+    Job* jobB = (Job*)b;
+    return jobA->difficulty - jobB->difficulty;
+}
+
+int compareInts(const void* a, const void* b) {
+    return (*(int*)a) - (*(int*)b);
+}
+
+int maxProfitAssignment(int* difficulty, int difficultySize, int* profit, int profitSize, int* worker, int workerSize) {
+    Job jobs[difficultySize];
+    for (int i = 0; i < difficultySize; ++i) {
+        jobs[i].difficulty = difficulty[i];
+        jobs[i].profit = profit[i];
+    }
+
+    qsort(jobs, difficultySize, sizeof(Job), compareJobs);
+    qsort(worker, workerSize, sizeof(int), compareInts);
+
+    int totalProfit = 0;
+    int maxProfit = 0;
+    int jobIndex = 0;
+
+    for (int i = 0; i < workerSize; ++i) {
+        while (jobIndex < difficultySize && jobs[jobIndex].difficulty <= worker[i]) {
+            if (jobs[jobIndex].profit > maxProfit) {
+                maxProfit = jobs[jobIndex].profit;
+            }
+            jobIndex++;
+        }
+        totalProfit += maxProfit;
+    }
+
+    return totalProfit;
+}
