@@ -1,0 +1,62 @@
+int min(int a, int b);
+int max(int a, int b);
+int Bouquets(int* bloomDay, int bloomDaySize, int day, int k);
+
+int minDays(int* bloomDay, int bloomDaySize, int m, int k){
+    int i, j;
+    int earliestDay = INT_MAX;
+    int latestDay = INT_MIN;
+    for(i = 0; i < bloomDaySize; i++){
+        earliestDay = min(earliestDay, bloomDay[i]);
+        latestDay = max(latestDay, bloomDay[i]);
+    }     
+    int left = earliestDay;
+    int right = latestDay;
+    int mid;
+    int bouquetsCount;
+    
+    while(left + 1 < right){  //剩兩個
+        mid = (left + right) / 2;
+        bouquetsCount = Bouquets(bloomDay, bloomDaySize, mid, k);
+        if(bouquetsCount >= m)
+            right = mid;
+        else
+            left = mid + 1;
+    }
+    
+    bouquetsCount = Bouquets(bloomDay, bloomDaySize, left, k);
+    if(bouquetsCount >= m)
+        return left;
+    
+    bouquetsCount = Bouquets(bloomDay, bloomDaySize, right, k);
+    if(bouquetsCount >= m)
+        return right;
+    
+    return -1;
+}
+
+int Bouquets(int* bloomDay, int bloomDaySize, int day, int k){
+    int totalBouquets = 0;
+    int consecutiveFlowers = 0;
+    for(int i = 0; i < bloomDaySize; i++){
+        if(bloomDay[i] <= day){
+            consecutiveFlowers++;
+            if(consecutiveFlowers == k){
+                totalBouquets++;
+                consecutiveFlowers = 0;
+            }
+        }
+        else{
+            consecutiveFlowers = 0;
+        }
+    }
+    return totalBouquets;
+}
+
+int min(int a, int b){
+    return (a < b) ? a : b;
+}
+
+int max(int a, int b){
+    return (a > b) ? a : b;
+}
