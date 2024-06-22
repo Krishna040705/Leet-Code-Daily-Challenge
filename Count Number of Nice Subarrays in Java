@@ -1,0 +1,23 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        Map<Integer, Integer> prefixCount = new HashMap<>();
+        prefixCount.put(0, 1);
+        int currentSum = 0;
+        int result = 0;
+        
+        for (int num : nums) {
+            currentSum += (num % 2 == 0) ? 0 : 1;
+            
+            if (prefixCount.containsKey(currentSum - k)) {
+                result += prefixCount.get(currentSum - k);
+            }
+            
+            prefixCount.put(currentSum, prefixCount.getOrDefault(currentSum, 0) + 1);
+        }
+        
+        return result;
+    }
+}
