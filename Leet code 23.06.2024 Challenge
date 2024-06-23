@@ -1,0 +1,30 @@
+int longestSubarray(int* nums, int numsSize, int limit) {
+    int* maxQueue = malloc(numsSize * sizeof(int));
+    int* minQueue = malloc(numsSize * sizeof(int));
+    int maxFront = 0, maxEnd = 0;
+    int minFront = 0, minEnd = 0;
+    int maxLength = 0;
+    int left = 0, right = 0;
+
+    for(right = 0; right < numsSize; right++) {
+        while(minEnd > minFront && nums[right] < minQueue[minEnd - 1])
+            minEnd--;  
+        while(maxEnd > maxFront && nums[right] > maxQueue[maxEnd - 1])
+            maxEnd--;
+        
+        minQueue[minEnd++] = nums[right];
+        maxQueue[maxEnd++] = nums[right];
+
+        while((maxQueue[maxFront] - minQueue[minFront]) > limit) {
+            if(maxQueue[maxFront] == nums[left]) maxFront++;
+            if(minQueue[minFront] == nums[left]) minFront++;
+            left++;
+        }
+        maxLength = fmax(maxLength, right - left + 1);
+    }
+
+    free(maxQueue);
+    free(minQueue);
+
+    return maxLength;
+}
