@@ -1,0 +1,14 @@
+class Solution {
+    public ListNode mergeNodes(ListNode head) {
+        ListNode p = head;
+        while (p != null) {
+            p.val += p.next.val;
+            p.next = p.next.next;
+            if (p.next.val == 0) {
+                if (p.next.next == null) p.next = null;
+                p = p.next;
+            }
+        }
+        return head;
+    }
+}
