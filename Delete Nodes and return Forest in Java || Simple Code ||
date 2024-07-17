@@ -1,0 +1,32 @@
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        List<TreeNode> roots = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<Integer> toDelete = new HashSet<>();
+        for (int val : to_delete) toDelete.add(val);
+        if (!toDelete.contains(root.val)) roots.add(root);
+        if (root != null) queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+
+            if (node.left != null) {
+                queue.add(node.left);
+                if (!toDelete.contains(node.left.val)) {
+                    if (toDelete.contains(node.val)) roots.add(node.left);
+                }
+                else node.left = null;
+            }
+
+            if (node.right != null) {
+                queue.add(node.right);
+                if (!toDelete.contains(node.right.val)) {
+                    if (toDelete.contains(node.val)) roots.add(node.right);
+                }
+                else node.right = null;
+            }
+        }
+
+        return roots;
+    }
+}D
