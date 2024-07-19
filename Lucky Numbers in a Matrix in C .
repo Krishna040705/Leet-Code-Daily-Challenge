@@ -1,0 +1,40 @@
+// This code is written by Keerti Krishna Sreenivas S
+// To those checking my submissions: I hope you enjoy reading code more than you enjoy eating bugs!
+// Also, feel free to check my GitHub for more cool projects. 
+//This Submission is for ...... ....... ... !
+
+
+
+#include <stdlib.h>
+
+int* luckyNumbers(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
+    int* result = (int*)malloc(matrixSize * sizeof(int));
+    int index = 0;
+
+    for (int i = 0; i < matrixSize; i++) {
+        int minRowVal = matrix[i][0];
+        int minColIdx = 0;
+
+        for (int j = 1; j < matrixColSize[i]; j++) {
+            if (matrix[i][j] < minRowVal) {
+                minRowVal = matrix[i][j];
+                minColIdx = j;
+            }
+        }
+
+        int isLucky = 1;
+        for (int k = 0; k < matrixSize; k++) {
+            if (matrix[k][minColIdx] > minRowVal) {
+                isLucky = 0;
+                break;
+            }
+        }
+
+        if (isLucky) {
+            result[index++] = minRowVal;
+        }
+    }
+
+    *returnSize = index;
+    return result;
+}
