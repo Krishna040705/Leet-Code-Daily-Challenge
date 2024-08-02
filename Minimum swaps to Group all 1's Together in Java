@@ -1,0 +1,28 @@
+//Code by Keerti Krishna Sreenivas S
+class Solution {
+    public int minSwaps(int[] nums) {
+        int n = nums.length, ans = n, cnt0 = 0, cnt1 = 0; 
+        for(int x : nums){
+            if(x == 1) cnt1++;
+            else cnt0++;
+        }
+
+        // all 1's will be together // ...00.. 1111 ..000..
+        int curCnt0 = 0;
+        for(int i=0; i<n; i++){
+            if( i>=cnt1 && nums[i-cnt1] == 0 ) curCnt0--;
+            if( nums[i] == 0 ) curCnt0++;
+            if( i>=cnt1-1 ) ans = Math.min(ans, curCnt0);
+        }
+
+        // all 0's will be together // address circular array problem
+        int curCnt1 = 0;
+        for(int i=0; i<n; i++){
+            if( i>=cnt0 && nums[i-cnt0] == 1 ) curCnt1--;
+            if( nums[i] == 1 ) curCnt1++;
+            if( i>=cnt0-1 ) ans = Math.min(ans, curCnt1);
+        }
+
+        return ans;
+    }
+}
