@@ -1,6 +1,6 @@
 # LeetCode Daily Challenge Solutions
 
-This repository contains my solutions to the LeetCode Daily Challenge questions in C and Java. I aim to solve and post solutions to the challenges regularly.
+Hello My name is Keerti Krishna Sreenivas S. This repository contains my solutions to the LeetCode Daily Challenge questions in C and Java. I aim to solve and post solutions to the challenges regularly.
 
 ## About LeetCode
 
@@ -36,5 +36,7 @@ If you have any questions, suggestions, or just want to connect, feel free to re
 - Email: keertikrishnasreenivas@gmail.com
 - LinkedIn: https://www.linkedin.com/in/keerti-krishna-sreenivas-96514227b
 
+
+***********Hoping that you will definetly contribute to my Repo**************
 
 Happy Coding! 🚀
