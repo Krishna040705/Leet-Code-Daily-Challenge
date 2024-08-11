@@ -1,0 +1,67 @@
+//Code by Keerti Krishna Sreenivas S
+//One of the Toughest Question for me !!!
+
+class Solution {
+
+    int[][] krishna = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    
+    public int minDays(int[][] meen) {
+        int rosh = countIslands(meen);
+
+        if (rosh > 1 || rosh == 0) return 0;
+
+        int rows = meen.length;
+        int cols = meen[0].length;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (meen[i][j] == 1) {
+                    meen[i][j] = 0;
+                    if (countIslands(meen) != 1) {
+                        return 1;
+                    }
+                    meen[i][j] = 1;
+                }
+            }
+        }
+
+        return 2;
+    }
+
+    public boolean isValid(int[][] meen, int rosh, int c) {
+        return rosh >= 0 && c >= 0 && rosh < meen.length && c < meen[0].length;
+    }
+
+    public int countIslands(int[][] meen) {
+        int n = meen.length;
+        int m = meen[0].length;
+
+        boolean[][] visited = new boolean[n][m];
+        int ans = 0;
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (meen[i][j] == 1 && !visited[i][j]) {
+                    dfs(meen, i, j, visited);
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    public void dfs(int[][] meen, int rosh, int c, boolean[][] visited) {
+        if (visited[rosh][c]) return;
+
+        visited[rosh][c] = true;
+        for (int k = 0; k < 4; ++k) {
+            int newRow = rosh + krishna[k][0];
+            int newCol = c + krishna[k][1];
+
+            if (isValid(meen, newRow, newCol) && meen[newRow][newCol] == 1) {
+                dfs(meen, newRow, newCol, visited);
+            }
+        }
+    }
+}
