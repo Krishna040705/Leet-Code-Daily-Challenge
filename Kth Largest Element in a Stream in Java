@@ -1,0 +1,27 @@
+//Code by Keerti Krishna Sreenivas S
+import java.util.PriorityQueue;
+
+class KthLargest {
+    private final int krishna;
+    private final PriorityQueue<Integer> meen;
+
+    public KthLargest(int krishna, int[] rosh) {
+        this.krishna = krishna;
+        this.meen = new PriorityQueue<>(krishna);
+        
+        for (int num : rosh) {
+            add(num);
+        }
+    }
+    
+    public int add(int rosh) {
+        if (meen.size() < krishna) {
+            meen.offer(rosh);
+        } else if (rosh > meen.peek()) {
+            meen.poll();
+            meen.offer(rosh);
+        }
+        
+        return meen.peek();
+    }
+}
