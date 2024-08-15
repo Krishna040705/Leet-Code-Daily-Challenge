@@ -1,0 +1,40 @@
+import java.util.*;
+
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int STANDARD_COST = 5;
+		Map<Integer, Integer> billMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < bills.length; i++)
+        {
+			int currentKey = bills[i];
+			if (billMap.containsKey(currentKey))
+			{
+				billMap.put(currentKey, billMap.get(currentKey) + 1);
+			}
+			else
+			{
+				billMap.put(currentKey, 1);
+			}
+			
+			int balance = currentKey - STANDARD_COST;
+			int denomination = balance;
+			if (balance == 0) {
+				System.out.println(balance);
+				continue;
+			}
+			
+			while (denomination > 0)
+			{
+				if (billMap.containsKey(denomination) && billMap.get(denomination) > 0 && denomination <= balance) {
+					balance -= denomination;
+					billMap.put(denomination, billMap.get(denomination) - 1);
+				} else {
+					denomination -= 5;
+				}
+				if (balance <= 0) break;
+			}
+			if (balance > 0) return false;
+        }
+        return true;
+    }
+}
