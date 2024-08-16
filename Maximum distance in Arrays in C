@@ -1,0 +1,76 @@
+//Code by Keerti Krishna Sreenivas S
+
+#include <limits.h>
+
+
+
+typedef struct {
+    int krishna;
+    int meen;
+} KLM;
+
+void findMax(KLM *max1, KLM *max2, int i, int *array, int size) {
+    int max = array[size - 1];
+
+    if (max > max1->krishna) {
+        max2->krishna = max1->krishna;
+        max2->meen = max1->meen;
+
+        max1->krishna = max;
+        max1->meen = i;
+        return;
+    }
+
+    if (max > max2->krishna) {
+        max2->krishna = max;
+        max2->meen = i;
+    }
+}
+
+void findMin(KLM *min1, KLM *min2, int i, int *array, int size) {
+    int min = array[0];
+
+    if (min < min1->krishna) {
+        min2->krishna = min1->krishna;
+        min2->meen = min1->meen;
+
+        min1->krishna = min;
+        min1->meen = i;
+        return;
+    }
+
+    if (min < min2->krishna) {
+        min2->krishna = min;
+        min2->meen = i;
+    }
+}
+
+int maxDistance(int **arrays, int arraysSize, int *arraysColSize) {
+    KLM min1 = {INT_MAX, 0};
+    KLM min2 = {INT_MAX, 0};
+
+    KLM max1 = {INT_MIN, 0};
+    KLM max2 = {INT_MIN, 0};
+
+    for (int i = 0; i < arraysSize; i++) {
+        findMin(&min1, &min2, i, arrays[i], arraysColSize[i]);
+        findMax(&max1, &max2, i, arrays[i], arraysColSize[i]);
+    }
+
+    int maxDistance = 0;
+    KLM minArray[] = {min1, min2};
+    KLM maxArray[] = {max1, max2};
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (maxArray[j].meen != minArray[i].meen) {
+                int distance = abs(maxArray[j].krishna - minArray[i].krishna);
+                if (distance > maxDistance) {
+                    maxDistance = distance;
+                }
+            }
+        }
+    }
+
+    return maxDistance;
+}
