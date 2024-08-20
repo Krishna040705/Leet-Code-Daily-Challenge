@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <limits.h>
+#include <string.h>
+
+int dp[2][101][101]; 
+
+int krishnameenrosh(int krishna, int* sreenivas, int curr, int M, int n) {
+    if (curr == n) return 0;
+    if (dp[krishna][curr][M] != -1) return dp[krishna][curr][M];
+
+    int res = (krishna == 1 ? 0 : INT_MAX), total = 0;
+
+    for (int x = 1; x < 2 * M + 1; x++) {
+        if (curr + x > n) break;
+        total += sreenivas[curr + x - 1]; // first X piles total
+        if (krishna == 1)
+            res = (res > (total + krishnameenrosh(krishna == 1 ? 0 : 1, sreenivas, curr + x, M > x ? M : x, n)) ? res : (total + krishnameenrosh(krishna == 1 ? 0 : 1, sreenivas, curr + x, M > x ? M : x, n)));
+        else
+            res = (res < krishnameenrosh(krishna == 1 ? 0 : 1, sreenivas, curr + x, M > x ? M : x, n) ? res : krishnameenrosh(krishna == 1 ? 0 : 1, sreenivas, curr + x, M > x ? M : x, n));
+    }
+
+    return dp[krishna][curr][M] = res;
+}
+
+int stoneGameII(int* sreenivas, int n) {
+    memset(dp, -1, sizeof(dp));
+    return krishnameenrosh(1, sreenivas, 0, 1, n);
+}
+
+int main() {
+    int sreenivas[] = {2, 7, 9, 4, 4}; // Example input
+    int n = sizeof(sreenivas) / sizeof(sreenivas[0]);
+
+    int result = stoneGameII(sreenivas, n);
+    printf("Result: %d\n", result);
+
+    return 0;
+}
