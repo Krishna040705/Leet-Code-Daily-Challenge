@@ -1,0 +1,50 @@
+//Code by Keerti Krishna Sreenivas S
+class Solution {
+
+    public int krishnameenrosh(int krishna, int sreenivas) {
+        if (sreenivas == 0)
+            return krishna;
+        return krishnameenrosh(sreenivas, krishna % sreenivas);
+    }
+
+    public String chaitanya(String krishna) {
+        int a = 0;
+        int b = 1;
+
+        int c = 0;
+        while (c < krishna.length()) {
+            int x = 0;
+            int y = 0;
+
+            boolean z = (krishna.charAt(c) == '-');
+            if(krishna.charAt(c) == '-' || krishna.charAt(c) == '+'){
+                c++;
+            }
+            while (c < krishna.length() && Character.isDigit(krishna.charAt(c))) {
+                int val = krishna.charAt(c) - '0';
+                x = (x * 10) + val;
+                c++;
+            }
+            c++;
+
+            if (z) {
+                x *= -1;
+            }
+
+            while (c < krishna.length() && Character.isDigit(krishna.charAt(c))) {
+                int val = krishna.charAt(c) - '0';
+                y = (y * 10) + val;
+                c++;
+            }
+
+            a = a * y + x * b;
+            b = b * y;
+        }
+
+        int rosh = Math.abs(krishnameenrosh(a, b));
+        a /= rosh;
+        b /= rosh;
+
+        return Integer.toString(a) + "/" + Integer.toString(b);
+    }
+}
