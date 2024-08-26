@@ -1,0 +1,30 @@
+//Code in C Language
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition for a Node.
+struct Node {
+    int val;
+    int numChildren;
+    struct Node** children;
+};
+
+void navigate(struct Node* root, int* result, int* returnSize) {
+    if (root != NULL) {
+        for (int i = 0; i < root->numChildren; i++) {
+            navigate(root->children[i], result, returnSize);
+            result[(*returnSize)++] = root->children[i]->val;
+        }
+    }
+}
+
+int* postorder(struct Node* root, int* returnSize) {
+    *returnSize = 0;
+    if (root != NULL) {
+        int* result = (int*)malloc(10000 * sizeof(int));
+        navigate(root, result, returnSize);
+        result[(*returnSize)++] = root->val;
+        return result;
+    }
+    return (int*)malloc(0); // Return an empty array if root is NULL
+}
