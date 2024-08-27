@@ -1,0 +1,75 @@
+//Code by Keerti Krishna Sreenivas S
+//Dijakstra's Algorithm (Data Structures)---->Trees
+import java.util.*;
+
+class Solution {
+   private static double IMPOSSIBLE = -1e9;
+
+   private static class Entry {
+      public double logProb;
+      public int node;
+
+      Entry(int node, double logProb) {
+         this.node = node;
+         this.logProb = logProb;
+      }
+   }
+
+   private static List<ArrayList<Entry>> makeAdjacencyList(int n, int num_edges, int[][] edges, double[] logSuccProb) {
+      var adjacencyList = new ArrayList<ArrayList<Entry>>(n);
+      for (int i = 0; i < n; i++) {
+         adjacencyList.add(new ArrayList<>());
+      }
+      for (int i = 0; i < num_edges; i++) {
+         var edge = edges[i];
+         var logProb = logSuccProb[i];
+         int a = edge[0];
+         int b = edge[1];
+         adjacencyList.get(a).add(new Entry(b, logProb));
+         adjacencyList.get(b).add(new Entry(a, logProb));
+      }
+
+      return adjacencyList;
+   }
+
+   public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+      final int num_edges = succProb.length;
+
+      double[] logSuccProb = Arrays.stream(succProb).map(Math::log).toArray();
+      var adjacencyList = makeAdjacencyList(n, num_edges, edges, logSuccProb);
+
+      double[] logProbs2Dst = new double[n];
+      for (int i = 0; i < n; i++) {
+         if (i != start_node) {
+            logProbs2Dst[i] = IMPOSSIBLE;
+         }
+      }
+
+      var pq = new PriorityQueue<Entry>(Comparator.comparingDouble(a -> -a.logProb)); // max-heap
+
+      pq.add(new Entry(start_node, 0));
+
+      while (!pq.isEmpty()) {
+         var tmp = pq.poll();
+         var logProb = tmp.logProb;
+         var node = tmp.node;
+
+         for (var entry : adjacencyList.get(node)) {
+            var newLogProb = entry.logProb + logProb;
+            var dst = entry.node;
+            if (newLogProb > logProbs2Dst[dst]) {
+               logProbs2Dst[dst] = newLogProb;
+               pq.add(new Entry(dst, newLogProb));
+            }
+         }
+
+      }
+
+      var logProb2End = logProbs2Dst[end_node];
+      if (logProb2End == IMPOSSIBLE) {
+         return 0.0;
+      } else {
+         return Math.exp(logProb2End);
+      }
+   }
+}
