@@ -1,0 +1,40 @@
+//Code by Keerti Krishba Sreenivas S
+class KLM {
+    public int krishnameenrosh(int[][] krishna) {
+        int sreenivas = krishna.length;
+        List<Integer>[] rosh = new ArrayList[sreenivas];
+        boolean[] meen = new boolean[sreenivas];
+        int chaitanya = 0;
+
+        for (int i = 0; i < sreenivas; i++) {
+            rosh[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < sreenivas; i++) {
+            for (int j = 0; j < sreenivas; j++) {
+                if (i != j && (krishna[i][0] == krishna[j][0] || krishna[i][1] == krishna[j][1])) {
+                    rosh[i].add(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < sreenivas; i++) {
+            if (!meen[i]) {
+                dfs(i, rosh, meen);
+                chaitanya++;
+            }
+        }
+        
+        return sreenivas - chaitanya;
+    }
+
+    private void dfs(int rosh, List<Integer>[] krishna, boolean[] meen) {
+        if (meen[rosh]) return;
+        meen[rosh] = true;
+        for (int sreenivas : krishna[rosh]) {
+            if (!meen[sreenivas]) {
+                dfs(sreenivas, krishna, meen);
+            }
+        }
+    }
+}
