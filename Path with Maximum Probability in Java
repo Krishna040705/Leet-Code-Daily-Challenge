@@ -1,0 +1,46 @@
+class Solution {
+    // Function to find three numbers such that arr[smaller[i]] < arr[i] <
+    // arr[greater[i]]
+    public List<Integer> find3Numbers(int[] arr) {
+        // code here
+        int n = arr.length;
+        List<Integer> result = new ArrayList<>();
+        if (n < 3) return result;
+
+        int[] smaller = new int[n];
+        int[] larger = new int[n];
+
+        smaller[0] = -1;
+        int minIndex = 0;
+        for (int i = 1; i < n; i++) {
+            if (arr[i] <= arr[minIndex]) {
+                minIndex = i;
+                smaller[i] = -1;
+            } else {
+                smaller[i] = minIndex;
+            }
+        }
+
+        larger[n - 1] = -1;
+        int maxIndex = n - 1;
+        for (int i = n - 2; i >= 0; i--) {
+            if (arr[i] >= arr[maxIndex]) {
+                maxIndex = i;
+                larger[i] = -1;
+            } else {
+                larger[i] = maxIndex;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (smaller[i] != -1 && larger[i] != -1) {
+                result.add(arr[smaller[i]]);
+                result.add(arr[i]);
+                result.add(arr[larger[i]]);
+                return result;
+            }
+        }
+
+        return result; 
+    }
+}
