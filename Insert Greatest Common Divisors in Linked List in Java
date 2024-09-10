@@ -1,0 +1,23 @@
+//Code by Keerti Krishna Sreenivas S
+import java.math.BigInteger;
+class Solution {
+    int gcd(int a,int b){
+          BigInteger gcd = BigInteger.valueOf(a).gcd(BigInteger.valueOf(b));
+          int ans=gcd.intValue();
+          return ans;
+}
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+          
+          ListNode temp=head;
+          while(temp != null && temp.next!=null){
+              int num=gcd(temp.val,temp.next.val);
+              ListNode new_node=new ListNode(num);
+              ListNode next=temp.next;
+              temp.next=new_node;
+              new_node.next=next;
+              temp=new_node.next;
+              }
+
+              return head;
+    }
+}
