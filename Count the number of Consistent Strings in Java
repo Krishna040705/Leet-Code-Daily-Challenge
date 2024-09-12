@@ -1,0 +1,21 @@
+//Code by Keerti Krishna Sreenivas S
+import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        int count = 0;
+        Set<Character> set = new HashSet<>();
+        for (char a : allowed.toCharArray())
+            set.add(a);
+        for (String word : words) {
+            for (char letter : word.toCharArray()) {
+                if (!set.contains(letter)) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return words.length - count;
+    }
+}
