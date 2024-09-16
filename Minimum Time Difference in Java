@@ -1,0 +1,19 @@
+//Code by Keerti Krishna Sreenivas S
+import java.util.*;
+
+class Solution {
+    public int fmd(List<String> tp) {
+        int[] m = new int[tp.size()];
+        int i = 0, u = 1440;
+        for (String s : tp) {
+            String[] a = s.split(":");
+            m[i++] = Integer.parseInt(a[0]) * 60 + Integer.parseInt(a[1]);
+        }
+        Arrays.sort(m);
+        int n = m.length, r = u - m[n - 1] + m[0];
+        for (int j = 0; j < n - 1; j++) {
+            r = Math.min(m[j + 1] - m[j], r);
+        }
+        return r;
+    }
+}
