@@ -1,0 +1,58 @@
+//Code by Keerti Krishna Sreenivas S
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class Solution {
+    public List<Integer> diffWaysToCompute(String inputExpr) {
+        return computeResult(inputExpr, new HashMap<>());
+    }
+
+    private List<Integer> computeResult(String inputExpr, Map<String, List<Integer>> memoMap) {
+        // Check if the result for the input expression is already computed
+        if (memoMap.containsKey(inputExpr)) {
+            return memoMap.get(inputExpr);
+        }
+
+        List<Integer> possibleResults = new ArrayList<>();
+        boolean isNumeric = true;
+
+        // Check each character in the input expression
+        for (int index = 0; index < inputExpr.length(); index++) {
+            char currentChar = inputExpr.charAt(index);
+            if (currentChar == '+' || currentChar == '-' || currentChar == '*') {
+                isNumeric = false;
+                // Split expression into left and right parts
+                String leftPart = inputExpr.substring(0, index);
+                String rightPart = inputExpr.substring(index + 1);
+                
+                // Compute all possible results for the left and right parts
+                List<Integer> leftResults = computeResult(leftPart, memoMap);
+                List<Integer> rightResults = computeResult(rightPart, memoMap);
+                
+                // Combine results
+                for (int leftVal : leftResults) {
+                    for (int rightVal : rightResults) {
+                        if (currentChar == '+') {
+                            possibleResults.add(leftVal + rightVal);
+                        } else if (currentChar == '-') {
+                            possibleResults.add(leftVal - rightVal);
+                        } else if (currentChar == '*') {
+                            possibleResults.add(leftVal * rightVal);
+                        }
+                    }
+                }
+            }
+        }
+
+        // If the input expression is just a number, add it to the results
+        if (isNumeric) {
+            possibleResults.add(Integer.parseInt(inputExpr));
+        }
+
+        // Store the computed results in memoMap
+        memoMap.put(inputExpr, possibleResults);
+        return possibleResults;
+    }
+}
