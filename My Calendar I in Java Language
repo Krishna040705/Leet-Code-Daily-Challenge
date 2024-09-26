@@ -1,0 +1,45 @@
+import java.util.*;
+
+class MyCalendar {
+    List<Event> appointments;
+
+    public MyCalendar() {
+        this.appointments = new ArrayList<>();
+    }
+
+    public boolean book(int begin, int finish) {
+        int position = insertPosition(begin);
+        if ((position == 0 || appointments.get(position - 1).end <= begin) &&
+            (position == appointments.size() || appointments.get(position).start >= finish)) {
+            appointments.add(position, new Event(begin, finish)); 
+            return true;
+        } else return false;
+    }
+
+    private int insertPosition(int begin) {
+        int left = 0;
+        int right = appointments.size() - 1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            int startValue = appointments.get(middle).start;
+            if (startValue == begin) {
+                return middle;
+            } else if (startValue < begin) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return left;
+    }
+}
+
+class Event {
+    int start;
+    int end;
+
+    public Event(int begin, int finish) {
+        this.start = begin;
+        this.end = finish;
+    }
+}
