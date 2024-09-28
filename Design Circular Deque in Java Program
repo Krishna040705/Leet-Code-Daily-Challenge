@@ -1,0 +1,58 @@
+//Keerti Krishna Sreenivas S
+class CircularDeque {
+    LinkedList<Integer> deque;
+    int capacity;
+
+    public CircularDeque(int size) {
+        deque = new LinkedList<Integer>(new ArrayList<>(size));
+        capacity = size;
+    }
+
+    public boolean addFront(int value) {
+        if (!isFull()) {
+            deque.addFirst(value);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addRear(int value) {
+        if (isFull()) {
+            return false;
+        }
+        deque.addLast(value);
+        return true;
+    }
+
+    public boolean removeFront() {
+        if (!deque.isEmpty()) {
+            deque.removeFirst();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeRear() {
+        if (!deque.isEmpty()) {
+            deque.removeLast();
+            return true;
+        }
+        return false;
+    }
+
+    public int getFront() {
+        return !deque.isEmpty() ? deque.getFirst() : -1;
+    }
+
+    public int getRear() {
+        return !deque.isEmpty() ? deque.getLast() : -1;
+    }
+
+    public boolean isEmpty() {
+        return deque.isEmpty();
+    }
+
+    public boolean isFull() {
+        return deque.size() == capacity;
+    }
+}
