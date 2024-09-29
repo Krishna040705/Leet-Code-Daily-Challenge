@@ -1,0 +1,94 @@
+class ListNode {
+    ListNode next;
+    ListNode prev;
+    String key;
+    int val;
+    
+    // Constructor for ListNode
+    public ListNode(String key, int val) {
+        this.next = null;
+        this.prev = null;
+        this.val = val;
+        this.key = key;
+    }
+}
+
+class AllOne {
+    HashMap<String, ListNode> map = new HashMap<>();;
+    ListNode head = new ListNode("", 0);
+    ListNode tail = new ListNode("", 0);
+    
+    // idea:
+        // map that stores key -> ListNode with val, key, prev, next;
+        // and have one linked list that keep tracks
+
+    public AllOne() {
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public void inc(String key) {
+        if(map.containsKey(key)) {
+            map.get(key).val++;
+            // move nodelist to right spot
+            while(map.get(key).prev.key != "" && map.get(key).prev.val < map.get(key).val) {
+                ListNode n = map.get(key).next;
+                ListNode p = map.get(key).prev;
+                ListNode p1 = map.get(key).prev.prev;
+                p.next = n;
+                n.prev = p;
+                p1.next = map.get(key);
+                map.get(key).prev = p1;
+                map.get(key).next = p;
+                p.prev = map.get(key);
+            }
+        } else {
+            map.put(key, new ListNode(key, 1));
+            map.get(key).prev = tail.prev;
+            tail.prev.next = map.get(key);
+            map.get(key).next = tail;
+            tail.prev = map.get(key);
+        }
+    }
+    
+    public void dec(String key) {
+        map.get(key).val--;
+        if(map.get(key).val == 0) {
+            map.get(key).next.prev = map.get(key).prev;
+            map.get(key).prev.next = map.get(key).next;
+            map.remove(key);
+        } else {
+            while(map.get(key).next.key != "" && map.get(key).next.val > map.get(key).val) {
+                ListNode n = map.get(key).next;
+                ListNode p = map.get(key).prev;
+                ListNode n1 = map.get(key).next.next;
+
+                p.next = n;
+                n.prev = p;
+
+                n1.prev = map.get(key);
+                map.get(key).next = n1;
+
+                map.get(key).prev = n;
+                n.next = map.get(key);
+            }
+        }
+    }
+    
+    public String getMaxKey() {
+        return head.next.key;
+    }
+    
+    public String getMinKey() {
+        return tail.prev.key;
+    }
+}
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne obj = new AllOne();
+ * obj.inc(key);
+ * obj.dec(key);
+ * String param_3 = obj.getMaxKey();
+ * String param_4 = obj.getMinKey();
+ */
