@@ -1,0 +1,33 @@
+class Solution {
+    public static boolean checkInclusion(String s1, String s2) {
+        int n1 = s1.length();
+        int n2 = s2.length();
+
+        for (int i = 0; i + n1 <= n2; i++) {
+            String str = s2.substring(i, n1 + i);
+            if (check(s1, str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean check(String s1, String s2) {
+        int[] vis = new int[26];
+
+        for (char ch : s1.toCharArray()) {
+            int idx = ch - 'a';
+            vis[idx]++;
+        }
+
+        for (char ch : s2.toCharArray()) {
+            int idx = ch - 'a';
+            vis[idx]--;
+        }
+
+        for (int val : vis) {
+            if (val != 0) return false;
+        }
+        return true;
+    }
+}
