@@ -1,0 +1,35 @@
+class Solution {
+    public int minLength(String s) {
+        Stack<Character> stack = new Stack<>();
+        
+        // Iterate over each character in the string
+        for(char c : s.toCharArray()){
+            // If the current character is 'B' and the stack has 'A' at the top
+            if(c == 'B'){
+                if(!stack.isEmpty() && stack.peek() == 'A') {
+                    // Remove the 'A' and don't push 'B'
+                    stack.pop();
+                } else {
+                    // Otherwise, just push 'B'
+                    stack.push(c);
+                }
+            } else {
+                // If the current character is 'D' and the stack has 'C' at the top
+                if(c == 'D'){
+                    if(!stack.isEmpty() && stack.peek() == 'C'){
+                        // Remove the 'C' and don't push 'D'
+                        stack.pop();
+                    } else {
+                        // Otherwise, just push 'D'
+                        stack.push(c);
+                    }
+                } else {
+                    // For any other character, simply push it onto the stack
+                    stack.push(c);
+                }
+            }
+        }
+        // The size of the stack represents the minimum length of the string
+        return stack.size();
+    }
+}
