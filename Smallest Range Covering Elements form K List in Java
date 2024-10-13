@@ -1,0 +1,55 @@
+import java.util.*;
+
+public class Solution {
+    public int[] smallestRange(List<List<Integer>> nums) {
+        Map<Integer, List<Integer>> mp = new HashMap<>();
+        int[] ans = {0, (int) 1e9};
+        
+        int low = (int) 1e5, high = (int) -1e5;
+
+        for (int i = 0; i < nums.size(); i++) {
+            low = Math.min(low, nums.get(i).get(0));
+            for (int num : nums.get(i)) {
+                mp.putIfAbsent(num, new ArrayList<>());
+                mp.get(num).add(i);
+            }
+            high = Math.max(high, nums.get(i).get(nums.get(i).size() - 1));
+        }
+
+        int cnt = high;
+        high = low;
+        Map<Integer, Integer> mp2 = new HashMap<>();
+
+        while (high <= cnt) {
+            if (mp.containsKey(high)) {
+                for (int x : mp.get(high)) {
+                    mp2.put(x, mp2.getOrDefault(x, 0) + 1);
+                }
+            }
+
+            if (mp2.size() >= nums.size()) {
+                if (mp2.size() >= nums.size() && ans[1] - ans[0] > high - low) {
+                    ans[0] = low;
+                    ans[1] = high;
+                }
+                while (low < high && mp2.size() >= nums.size()) {
+                    if (mp.containsKey(low)) {
+                        for (int x : mp.get(low)) {
+                            mp2.put(x, mp2.get(x) - 1);
+                            if (mp2.get(x) == 0) {
+                                mp2.remove(x);
+                            }
+                        }
+                    }
+                    low++;
+                    if (mp2.size() >= nums.size() && ans[1] - ans[0] > high - low) {
+                        ans[0] = low;
+                        ans[1] = high;
+                    }
+                }
+            }
+            high++;
+        }
+        return ans;
+    }
+}
