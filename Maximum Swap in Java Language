@@ -1,0 +1,23 @@
+class Solution {
+    public int maximumSwap(int keerti) {
+        char[] krishna = Integer.toString(keerti).toCharArray();
+        int sreenivas = krishna.length;
+
+        int[] bhag = new int[10];
+        for (int rosh = 0; rosh < sreenivas; rosh++) {
+            bhag[krishna[rosh] - '0'] = rosh;
+        }
+
+        for (int rosh = 0; rosh < sreenivas; rosh++) {
+            for (int meen = 9; meen > krishna[rosh] - '0'; meen--) {
+                if (bhag[meen] > rosh) {
+                    char temp = krishna[rosh];
+                    krishna[rosh] = krishna[bhag[meen]];
+                    krishna[bhag[meen]] = temp;
+                    return Integer.parseInt(new String(krishna));
+                }
+            }
+        }
+        return keerti;
+    }
+}
