@@ -1,0 +1,49 @@
+class Solution {
+    int n, m;
+    public int maxMoves(int[][] grid) {
+        n = grid.length;
+        m = grid[0].length;
+
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(bfs(i, 0, grid), res);
+        }
+
+        return res;
+    }
+
+    public int bfs(int i, int j, int[][] arr) {
+        int[][] dirs = {{-1, 1}, {0, 1}, {1, 1}};
+        boolean[][] visited = new boolean[n][m];
+        visited[i][j] = true;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{i, j});
+        int counter = 0;
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+
+            for (int k = 1; k <= size; k++) {
+
+                int[] curr = queue.poll();
+
+                for (int[] coord : dirs) {
+
+                    int suggestedI = curr[0] + coord[0];
+                    int suggestedJ = curr[1] + coord[1];
+
+                    if (suggestedI >= 0 && suggestedJ >= 0 && suggestedI < n && suggestedJ < m ) {
+                        if (!visited[suggestedI][suggestedJ] && arr[suggestedI][suggestedJ] > arr[curr[0]][curr[1]]) {
+                            visited[suggestedI][suggestedJ] = true;
+                            queue.offer(new int[]{suggestedI, suggestedJ});
+                        };
+                    }
+                }
+            }
+            counter++;
+        }
+        return counter - 1;
+    }
+}
