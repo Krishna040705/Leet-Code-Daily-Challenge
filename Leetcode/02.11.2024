@@ -1,0 +1,19 @@
+import java.util.StringTokenizer;
+
+class Solution {
+    public boolean isCircularSentence(String sentence) {
+        StringTokenizer tokenizer = new StringTokenizer(sentence);
+        String firstWord = tokenizer.nextToken();
+        String prevWord = firstWord;
+
+        while (tokenizer.hasMoreTokens()) {
+            String word = tokenizer.nextToken();
+            if (prevWord.charAt(prevWord.length() - 1) != word.charAt(0)) {
+                return false;
+            }
+            prevWord = word;
+        }
+
+        return prevWord.charAt(prevWord.length() - 1) == firstWord.charAt(0);
+    }
+}
